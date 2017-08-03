@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,12 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
+    
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
 
@@ -25,7 +31,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        //initRetrofit();
         initEvent();
+    }
+
+    private void initRetrofit() {
+        persiler.getCall(new Callback<UserBean>() {
+            @Override
+            public void onResponse(retrofit2.Call<UserBean> call, Response<UserBean> response) {
+                UserBean body = response.body();
+                Log.e(TAG, "onResponse: "+body.getStatus());
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<UserBean> call, Throwable t) {
+
+            }
+        });
+
     }
 
     private void initEvent() {
